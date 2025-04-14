@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"nginx","nginx.ingress.kubernetes.io/client-body-buffer-size":"100K","nginx.ingress.kubernetes.io/configuration-snippet":"if ($http_x_forwarded_proto = 'http') {\n  return 301 https://$host$request_uri;\n}\n# if ($host = 'hub.thomsonmedical.com') {\n#  return 301 https://$host$request_uri;\n# }\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\nadd_header X-Frame-Options DENY;\nadd_header X-Content-Type-Options nosniff;\nadd_header X-XSS-Protection \"1; mode=block\";\nadd_header Referrer-Policy no-referrer;\nadd_header Strict-Transport-Security \"max-age=31536000\";\n","nginx.ingress.kubernetes.io/enable-owasp-core-rules":"true","nginx.ingress.kubernetes.io/proxy-body-size":"54m","nginx.ingress.kubernetes.io/proxy-buffering":"on","nginx.ingress.kubernetes.io/proxy-connect-timeout":"3600","nginx.ingress.kubernetes.io/proxy-http-version":"1.1","nginx.ingress.kubernetes.io/proxy-read-timeout":"3600","nginx.ingress.kubernetes.io/proxy-send-timeout":"3600"},"name":"thomson-prod-ingress","namespace":"default"},"spec":{"ingressClassName":"nginx","rules":[{"http":{"paths":[{"backend":{"service":{"name":"emrv2-prod-frontend","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}},{"host":"hub.thomsonmedical.com","http":{"paths":[{"backend":{"service":{"name":"emrv2-prod-frontend","port":{"number":80}}},"pathType":"ImplementationSpecific"}]}},{"host":"hub-api.thomsonmedical.com","http":{"paths":[{"backend":{"service":{"name":"emrv2-prod-api","port":{"number":3000}}},"pathType":"ImplementationSpecific"}]}},{"host":"hub-imgapi.thomsonmedical.com","http":{"paths":[{"backend":{"service":{"name":"emrv2-prod-imgapi","port":{"number":3003}}},"pathType":"ImplementationSpecific"}]}}]}}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 100K
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($http_x_forwarded_proto = 'http') {
+        return 301 https://$host$request_uri;
+      }
+      # if ($host = 'hub.thomsonmedical.com') {
+      #  return 301 https://$host$request_uri;
+      # }
+      resolver 8.8.8.8 8.8.4.4 valid=300s;
+      resolver_timeout 5s;
+      add_header X-Frame-Options DENY;
+      add_header X-Content-Type-Options nosniff;
+      add_header X-XSS-Protection "1; mode=block";
+      add_header Referrer-Policy no-referrer;
+      add_header Strict-Transport-Security "max-age=31536000";
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 54m
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  creationTimestamp: "2024-08-09T09:57:07Z"
+  generation: 19
+  name: thomson-prod-ingress
+  namespace: default
+  resourceVersion: "6625354"
+  uid: a988087a-c4f4-403d-bc00-da906c887bd4
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: hub.thomsonmedical.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: emrv2-prod-frontend
+            port:
+              number: 80
+        pathType: ImplementationSpecific
+  - host: hub-api.thomsonmedical.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: emrv2-prod-api
+            port:
+              number: 3000
+        pathType: ImplementationSpecific
+  - host: hub-imgapi.thomsonmedical.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: emrv2-prod-imgapi
+            port:
+              number: 3003
+        pathType: ImplementationSpecific
+status:
+  loadBalancer:
+    ingress:
+    - hostname: abb7bd13e9f454bd8954fe83acd4fc79-060162e7a6d83f46.elb.ap-southeast-1.amazonaws.com
